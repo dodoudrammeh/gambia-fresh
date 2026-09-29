@@ -22,7 +22,6 @@ export const shop: ShopSettings = {
     "Yundum",
     "Brikama",
     "Banjul",
-    "enter your location",
   ],
   deliveryTimes: ["Today morning", "Today evening", "Tomorrow"],
 };

@@ -640,6 +640,20 @@ export const App = () => {
   }, [receipt]);
 
   useEffect(() => {
+    if (panel !== "cart") return;
+    const html = document.documentElement;
+    const body = document.body;
+    const previousHtml = html.style.overflow;
+    const previousBody = body.style.overflow;
+    html.style.overflow = "hidden";
+    body.style.overflow = "hidden";
+    return () => {
+      html.style.overflow = previousHtml;
+      body.style.overflow = previousBody;
+    };
+  }, [panel]);
+
+  useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setPanel(null);
@@ -835,6 +849,14 @@ export const App = () => {
       id="top"
       className="min-h-screen bg-page font-sans text-ink antialiased"
     >
+      {panel === "cart" && (
+        <button
+          type="button"
+          aria-label="Close cart"
+          className="fixed inset-0 z-30 cursor-default bg-black/40"
+          onClick={() => setPanel(null)}
+        />
+      )}
       <header
         ref={headerRef}
         className="sticky top-0 z-40 border-b border-slate-200/80 bg-white/95 backdrop-blur"
@@ -945,10 +967,14 @@ export const App = () => {
                 </MenuCard>
               )}
               {panel === "cart" && (
-                <MenuCard title="Cart" drop onClose={() => setPanel(null)}>
+                <MenuCard
+                  title="Cart"
+                  drop
+                  scroll
+                  onClose={() => setPanel(null)}
+                >
                   <CartPanel
                     lines={cart}
-                    areas={shop.areas}
                     deliveryFee={shop.deliveryFee}
                     customerName={customerName}
                     customerPhone={customerPhone}
@@ -1515,7 +1541,7 @@ export const App = () => {
               onChange={setBestTab}
             />
           </div>
-          <ul className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+          <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {shownBest.map((product) => (
               <li key={product.id}>
                 <ProductCard

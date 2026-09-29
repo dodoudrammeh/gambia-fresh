@@ -4,7 +4,6 @@ import { money } from "../utils";
 
 export interface CartPanelProps {
   lines: CartLine[];
-  areas: readonly string[];
   deliveryFee: number;
   customerName: string;
   customerPhone: string;
@@ -24,7 +23,6 @@ export interface CartPanelProps {
 
 export const CartPanel = ({
   lines,
-  areas,
   deliveryFee,
   customerName,
   customerPhone,
@@ -130,18 +128,14 @@ export const CartPanel = ({
       </label>
       <label className="block text-sm">
         <span className="font-semibold text-ink">Delivery area</span>
-        <select
+        <input
           required
           value={area}
           onChange={(event) => onAreaChange(event.target.value)}
+          autoComplete="address-level2"
+          placeholder="Type your area, village, or neighbourhood"
           className="mt-0.5 w-full rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-brand/30"
-        >
-          {areas.map((name) => (
-            <option key={name} value={name}>
-              {name}
-            </option>
-          ))}
-        </select>
+        />
       </label>
       <label className="block text-sm">
         <span className="font-semibold text-ink">Where is the house?</span>
